@@ -4,9 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="Assets/css/style.css" rel="stylesheet">
+    <title>Volcano, Lizard, Spock</title>
 </head>
 <body>
-    
+    <div class="container">
+        <div class="jumbotron">
+        <h1 class="text-center">Volcano, Lizard, Spock</h1>
+        </div>
+    </div>
+    <div class="dropdown">
+        <span>How to Play</span>
+        <div class="dropdown-content">
+            <p>
+                This is like your typical game of rock, paper, scisors only instead of using rock, paper, 
+                scisors you will be using volcano, lizard, Spock. In this game, volcano beats Spock, Spock 
+                beats lizard, and lizard beats volcano. All you have to do is enter your name in the field 
+                below and wait for a second player to show up (it will notify you in the chatbox below). 
+                Once a player has arrived, then you can pick one of the three options mentioned above and 
+                your opponent will do the same. Scores are totaled as wins, loses, and ties and will be 
+                displayed on either side of the screen. The chatbox below can be used to communicate with 
+                your opponent. Good luck and have fun playing! 
+            </p>
+        </div>
+    </div>
+    <div class="formPanel">
+        <span>Enter your name here:</span>
+        <form id="name-form">
+            <input type="text" id="name-form">
+            <input type="submit" id="add-name" value="submit">
+        </form>
+    </div>
+    <div class="class class-default">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="panel panel-default playerPanel" id="playerPanel1">
+                    <div class="panel-heading panelName">
+                        <h3 class="panel-title text-center"></h3>
+                    </div>
+                    <div class="panel-body panelOption text-center">
+		                <div class="option">Volcano</div>
+		            </div>
+		            <div class="panel-body panelOption text-center">
+		                <div class="option">Lizard</div>
+		            </div>
+		            <div class="panel-body panelOption text-center">
+		                <div class="option">Spock</div>
+		            </div>
+                    <div class="panel-body panelStats text-center">
+		                <div class="stats" id="player1Stats"></div>
+		            </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+		        <div class="panel panel-default gamePanel">
+		            <h3 class="panel-title text-center" id="waitingNotice"></h3>
+		            <h3 class="panel-title text-center" id="roundOutcome"></h3>
+		        </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+		        <div class="panel panel-default playerPanel" id="playerPanel2">
+		            <div class="panel-heading panelName">
+						<h3 class="panel-title text-center" id="playerTwoName"></h3>
+					</div>
+		            <div class="panel-body panelOption text-center">
+		                <div class="option">Volcano</div>
+		            </div>
+		            <div class="panel-body panelOption text-center">
+		                <div class="option">Lizard</div>
+		            </div>
+		            <div class="panel-body panelOption text-center">
+		                <div class="option">Spock</div>
+		            </div>
+		            <div class="panel-body panelStats text-center">
+		                <div class="stats" id="player2Stats"></div>
+		            </div>
+		        </div>
+		    </div>
+        </div>
+    </div>
+    <div class="row">
+	    <div class="col-lg-8 col-md-8 col-sm-8">
+	    	<div id="chatDisplay"></div>
+	    </div>
+		<div class="col-lg-4 col-md-4 col-sm-4"> 
+		    <div class="chatInput">
+		    	<div class="chatLabel">Enter Message Here</div>
+				<div class="chatPanel"> 
+					<form id="chat-form">
+						<textarea type="text" id="chat-input"></textarea>
+						<input id="chat-send" type="submit" value="Send">
+					</form>
+				</div>
+			</div>
+	    </div> 
+	</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="Assets/javascript/app.js" type="text/javascript"></script>
 </body>
 </html>
