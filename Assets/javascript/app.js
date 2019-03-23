@@ -93,18 +93,18 @@ database.ref("/chat/").on("child_added", function (snapshot) {
   var chatMessage = snapshot.val();
   var chatEntry = $("<div>").html(chatMessage);
 
-  if (chatMessage.includes("disconnected")) {
-    chatEntry.addClass("chatColorDisconnected");
-  }
-  else if (chatMessage.includes("joined")) {
-    chatEntry.addClass("chatColorJoined");
-  }
-  else if (chatMessage.startsWith(yourPlayerName)) {
-    chatEntry.addClass("chatColor1");
-  }
-  else {
-    chatEntry.addClass("chatColor2");
-  }
+  // if (chatMessage.includes("disconnected")) {
+  //   chatEntry.addClass("chatColorDisconnected");
+  // }
+  // else if (chatMessage.includes("joined")) {
+  //   chatEntry.addClass("chatColorJoined");
+  // }
+  // else if (chatMessage.startsWith(yourPlayerName)) {
+  //   chatEntry.addClass("chatColor1");
+  // }
+  // else {
+  //   chatEntry.addClass("chatColor2");
+  // }
   $("#chatDisplay").append(chatEntry);
   $("#chatDisplay").scrollTop($("#chatDisplay")[0].scrollHeight);
 });
@@ -136,7 +136,8 @@ database.ref("/outcome/").on("value", function (snapshot) {
 
 $("#add-name").on("click", function (event) {
   event.preventDefault();
-  // console.log($("#name-input").val())
+  console.log($("#name-input").val())
+  yourPlayerName = $("#name-input").val();
   if (($("#name-input").val() !== "") && !(player1 && player2)) {
     if (player1 === null) {
       yourPlayerName = $("#name-input").val();
@@ -178,23 +179,32 @@ $("#add-name").on("click", function (event) {
     database.ref("/chat/" + chatKey).set(msg);
 
     $("#name-input").val("");
+
+    console.log("New player name ", yourPlayerName);
   }
 });
 
 $("#chat-send").on("click", function (event) {
   event.preventDefault();
-
-  if ((yourPlayerName !== "") && ($("#chat-input").val().trim() !== "")) {
+console.log($("#chat-input").val().trim())
+console.log(yourPlayerName)
+console.log(turn)
+  if (($("#chat-input").val().trim() !== "")) {
     var msg = yourPlayerName + ": " + $("#chat-input").val().trim();
     $("#chat-input").val("");
 
-    var chatEntry = $("<div>").html(msg);
 
-    chatEntry.append(chatMessage);
+    // var chatKey = database.ref().child("/child/").push().key;
 
-    var chatKey = database.ref().child("/child/").push().key;
+    // database.ref("/chat/" + chatKey).set(msg);
 
-    database.ref("/chat/" + chatKey).set(msg);
+      var userMsg = {
+        name: yourPlayerName,
+        message: msg
+      };
+      database.ref("/chat").push(userMsg);
+    // create obj = {name: user, msg: "message"}
+    // database.ref("/chat").push(obj);
   }
 });
 
