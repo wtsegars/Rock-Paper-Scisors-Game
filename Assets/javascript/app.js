@@ -1,113 +1,115 @@
+// Initialize Firebase
 var config = {
-    apiKey: "AIzaSyD6MWygF7ZuEBmqyaEBItcabu6_8JNIo8k",
-    authDomain: "rps-multi-game.firebaseapp.com",
-    databaseURL: "https://rps-multi-game.firebaseio.com",
-    projectId: "rps-multi-game",
-    storageBucket: "rps-multi-game.appspot.com",
-    messagingSenderId: "595897192937"
-  };
-  firebase.initializeApp(config);
+    apiKey: "AIzaSyDETOOYGjmnF--QUGkzFfd6fR9EJsyESFQ",
+    authDomain: "rps-game-1d5f9.firebaseapp.com",
+    databaseURL: "https://rps-game-1d5f9.firebaseio.com",
+    projectId: "rps-game-1d5f9",
+    storageBucket: "rps-game-1d5f9.appspot.com",
+    messagingSenderId: "304015985227"
+};
+firebase.initializeApp(config);
 
-  var database = firebase.database();
+var database = firebase.database();
 
-  let player1Wins = 0;
-  let player1Loses = 0;
-  let player1Ties = 0;
-  let player2Wins = 0;
-  let player2Loses = 0;
-  let player2Ties = 0;
+let player1Wins = 0;
+let player1Loses = 0;
+let player1Ties = 0;
+let player2Wins = 0;
+let player2Loses = 0;
+let player2Ties = 0;
 
-  let player1Selection = null;
-  let player2Selection = null;
+let player1 = null;
+let player2 = null;
 
-  let player1Name = "";
-  let player2Name = "";
+let player1Name = "";
+let player2Name = "";
 
-  let player1Choice = "";
-  let player2Choice = "";
+let player1Choice = "";
+let player2Choice = "";
+let yourPlayerName = "";
+let turn = 1;
 
-  let turn = 1;
+database.ref("/players/").on('value', function (snapshot) {
+    if (snapshot.child('player1').exists()) {
+        player1 = snapshot.val().player1;
+        player1Name = player1.name;
 
-  database.ref("/players/").on('value', function(snapshot) {
-      if(snapshot.child('player1').exists()) {
-          player1 = snapshot.val().player1;
-          player1Name = player1.name;
+        $('#playerOneName').text(player1Name);
+        $('#player1Stats').html("Wins: " + player1Wins + "Loses: " + player1Loses + "Ties: " + player1Ties);
+    }
+    else {
+        player1 = null;
+        player1Name = "";
 
-          $('#playerOneName').text(player1Name);
-          $('#player1Stats').html("Wins: " + player1Wins + "Loses: " + player1Loses + "Ties: " + player1Ties);
-      }
-      else {
-          player1 = null;
-          player1Name = "";
+        $("#playerOneName").text("Waiting for Player 1...");
+        $("#waitingNotice").html("");
+        $("#player1Stats").html("Win: 0, Loss: 0, Tie: 0");
+        database.ref('/outcome/').remove();
+    }
 
-          $("#playerOneName").text("Waiting for Player 1...");
-          $("#waitingNotice").html("");
-          $("#player1Stats").html("Win: 0, Loss: 0, Tie: 0");
-          database.ref('/outcome/').remove();
-      }
+    if (snapshot.child('player2').exists()) {
+        player2 = snapshot.val().player2;
+        player2Name = player2.name;
 
-      if (snapshot.child('player2').exists()) {
-          player2 = snapshot.val().player2;
-          player2Name = player2.name;
+        $("#playerTwoName").text(player2Name);
+        $("#player2Stats").html("Wins: " + player2Wins + "Loses: " + player2Loses + "Ties: " + player2Ties);
+    }
+    else {
+        player2 = null;
+        playerName = "";
 
-          $("#playerTwoName").text(player2Name);
-          $("#player2Stats").html("Wins: " + player2Wins + "Loses: " + player2Loses + "Ties: " + player2Ties);
-      }
-      else {
-          player2 = null;
-          playerName = "";
+        $("#playerTwoName").text("Waiting for Player 2...");
+        $("#waitingNotice").html('');
+        $("#player2Stats").html("Win: 0, Loss: 0, Tie: 0");
+    }
 
-          $("#playerTwoName").text("Waiting for Player 2...");
-          $("#waitingNotice").html('');
-          $("#player2Stats").html("Win: 0, Loss: 0, Tie: 0");
-      }
+    if (player1 && player2) {
+        $("#playerPanel1").addClass("playerPanelTurn");
+        $("#waitingNotice").html("Waiting for " + player1Name + "to choose.")
+    }
 
-      if (player1 && player2) {
-          $("#playerPanel1").addClass("playerPanelTurn");
-          $("#waitingNotice").html("Waiting for " + player1Name + "to choose.")
-      }
+    if (!player1 && !player2) {
+        database.ref("/chat/").remove();
+        database.ref("/turn/").remove();
+        database.ref("/outcome/").remove();
 
-      if (!player1 && !player2) {
-		database.ref("/chat/").remove();
-		database.ref("/turn/").remove();
-		database.ref("/outcome/").remove();
+        $("#chatDisplay").empty();
+        $("#playerPanel1").removeClass("playerPanelTurn");
+        $("#playerPanel2").removeClass("playerPanelTurn");
+        $("#roundOutcome").html("Rock-Paper-Scissors");
+        $("#waitingNotice").html("");
+    }
+});
 
-		$("#chatDisplay").empty();
-		$("#playerPanel1").removeClass("playerPanelTurn");
-		$("#playerPanel2").removeClass("playerPanelTurn");
-		$("#roundOutcome").html("Rock-Paper-Scissors");
-		$("#waitingNotice").html("");
-	}
-  });
+database.ref("/players/").on("child_removed", function (snapshot) {
+    var message = snapshot.val().name + "has left the game.";
+    console.log(message);
+    var chatKey = database.ref().child("/chat/").push().key;
 
-  database.ref("/players/").on("child_removed", function(snapshot) {
-      var message = snapshot.val().name + "has left the game.";
-      var chatKey = database.ref().child("/chat/").push().key;
+    database.ref("/chat/" + chatKey).set(message);
+});
 
-      database.ref("/chat/" + chatKey).set(message);
-  });
+database.ref("/chat/").on("child_added", function (snapshot) {
+    var chatMessage = snapshot.val();
+    var chatEntry = $("<div>").html(chatMessage);
 
-  database.ref("/chat/").on("child_added", function(snapshot) {
-      var chatMessage = snapshot.val();
-      var chatEntry = $("<div>").html(chatMessage);
-
-    if (chatMsg.includes("disconnected")) {
+    if (chatMessage.includes("disconnected")) {
         chatEntry.addClass("chatColorDisconnected");
-    } 
-    else if (chatMsg.includes("joined")) {
+    }
+    else if (chatMessage.includes("joined")) {
         chatEntry.addClass("chatColorJoined");
-    } 
-    else if (chatMsg.startsWith(yourPlayerName)) {
+    }
+    else if (chatMessage.startsWith(yourPlayerName)) {
         chatEntry.addClass("chatColor1");
-    } 
+    }
     else {
         chatEntry.addClass("chatColor2");
     }
     $("#chatDisplay").append(chatEntry);
     $("#chatDisplay").scrollTop($("#chatDisplay")[0].scrollHeight);
-  });
+});
 
-  database.ref("/turn/").on("value", function(snapshot) {
+database.ref("/turn/").on("value", function (snapshot) {
     if (snapshot.val() === 1) {
         turn = 1;
 
@@ -126,90 +128,98 @@ var config = {
             $("#waitingNotice").html("Waiting on " + player2Name + "to choose.");
         }
     }
-  });
+});
 
-  database.ref("/outcome/").on("value", function(snapshot) {
-      $("#roundOutsome").html(snapshot.val());
-  });
+database.ref("/outcome/").on("value", function (snapshot) {
+    $("#roundOutsome").html(snapshot.val());
+});
 
-  $("#add-name").on("click", function(event) {
-      event.preventDefault();
-
-      if (($("#name-input").val().trim() !== "") && !(player1 && player2)) {
-          if (player1 === null) {
-              yourPlayerName = $("#name-input").val().trim();
-              player1 = {
-                  name: yourPlayerName, 
-                  win: 0,
-                  loss: 0,
-                  tie: 0,
-                  choice: ""
-              };
-
-              database.ref().child("/players/player1").set(player1);
-
-              database.ref().child("/turn").set(1);
-
-              database.ref().child("/players/player2").onDisconnect().remove();
-          }
-          else if ((player1 !== null) && (player2 === null)) {
-              yourPlayerName = $("#name-input").val().trim();
-              player2 = {
-                  name: yourPlayerName,
-                  win: 0,
-                  loss: 0,
-                  tie: 0,
-                  choice: ""
-              };
-
-              database.ref().child("/players/player2").set(player2);
-
-              database.ref("/player/player2").onDisconnect().remove();
-          }
-
-          var msg = yourPlayerName + " has joined the game.";
-
-          var chatKey = database.ref().child("/chat/").push().key;
-
-          database.ref("/chat/" + chatKey).set(msg);
-
-          $("#name-input").val("");
-      }
-  });
-
-  $("#chat-send").on("click", function(event) {
-      event.preventDefault();
-
-      if ((yourPlayerName !== "") && ($("#chat-input").val().trim() !== "")) {
-          var msg = yourPlayerName + ": " + $("#chat-input").val().trim();
-          $("#chat-input").val("");
-
-          var chatKey = database.ref().child("/child/").push().key;
-
-          database.ref("/chat/" + chatKey).set(msg);
-      }
-  });
-
-$("#playerPanel1").on("click", ".panelOption", function(event) {
+$("#add-name").on("click", function (event) {
     event.preventDefault();
+    // console.log($("#name-input").val())
+    if (($("#name-input").val() !== "") && !(player1 && player2)) {
+        if (player1 === null) {
+            yourPlayerName = $("#name-input").val();
+            console.log(yourPlayerName)
+            player1 = {
+                name: yourPlayerName,
+                win: 0,
+                loss: 0,
+                tie: 0,
+                choice: ""
+            };
+            console.log(database.ref().child("/players/player1"))
+            database.ref().child("/players/player1").set(player1);
 
-    if (player1 && player2 && (yourPlayerName === player1.name) && (turn === 2)) {
-        var choice = $(this).text().trim();
 
-        player1Choice = choice;
-        database.ref().child("/players/player1/choice").set(choice);
+            database.ref().child("/turn").set(1);
 
-        turn = 2;
-        database.ref().child("/turn").set(2);
+            database.ref().child("/players/player2").onDisconnect().remove();
+        }
+        else if ((player1 !== null) && (player2 === null)) {
+            yourPlayerName = $("#name-input").val().trim();
+            player2 = {
+                name: yourPlayerName,
+                win: 0,
+                loss: 0,
+                tie: 0,
+                choice: ""
+            };
+
+            database.ref().child("/players/player2").set(player2);
+
+            database.ref("/player/player2").onDisconnect().remove();
+        }
+
+        var msg = yourPlayerName + " has joined the game.";
+
+        var chatKey = database.ref().child("/chat/").push().key;
+
+        database.ref("/chat/" + chatKey).set(msg);
+
+        $("#name-input").val("");
     }
 });
 
-$("#playerPanel2").on("click", ".panelOption", function(event) {
+$("#chat-send").on("click", function (event) {
     event.preventDefault();
 
+    if ((yourPlayerName !== "") && ($("#chat-input").val().trim() !== "")) {
+        var msg = yourPlayerName + ": " + $("#chat-input").val().trim();
+        $("#chat-input").val("");
+
+        var chatKey = database.ref().child("/child/").push().key;
+
+        database.ref("/chat/" + chatKey).set(msg);
+    }
+});
+
+$(".p1Option").on("click", function (event) {
+
+    database.ref('players').once('value', function (sShot) {
+        console.log(sShot.val())
+        const player1 = sShot.val().player1
+        const player2 = sShot.val().player2
+
+
+        event.preventDefault();
+        if (player1 && player2 && (yourPlayerName === player1.name) && (turn === 2)) {
+            var choice = $(this).text().trim();
+            console.log(choice)
+            player1Choice = choice;
+            database.ref().child("/players/player1/choice").set(choice);
+
+            turn = 2;
+            database.ref().child("/turn").set(2);
+        }
+    })
+});
+
+$(".p2Option").on("click", function (event) {
+    event.preventDefault();
     if (player1 && player2 && (yourPlayerName === player2.name) && (turn === 2)) {
         var choice = $(this).text().trim();
-
+        console.log(choice)
         player2Choice = choice;
         database.ref().child("/players/player2/choice").set(choice);
 
