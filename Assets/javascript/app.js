@@ -65,7 +65,7 @@ database.ref("/players/").on('value', function (snapshot) {
 
   if (player1 && player2) {
     $("#playerPanel1").addClass("playerPanelTurn");
-    $("#waitingNotice").html("Waiting for " + player1Name + "to choose.")
+    $("#waitingNotice").html("Waiting for " + player1Name + " to choose.")
   }
 
   if (!player1 && !player2) {
@@ -82,7 +82,7 @@ database.ref("/players/").on('value', function (snapshot) {
 });
 
 database.ref("/players/").on("child_removed", function (snapshot) {
-  var message = snapshot.val().name + "has left the game.";
+  var message = snapshot.val().name + " has left the game.";
   console.log(message);
   var chatKey = database.ref().child("/chat/").push().key;
 
@@ -116,7 +116,7 @@ database.ref("/turn/").on("value", function (snapshot) {
     if (player1 && player2) {
       $("#playerPanel1").addClass("playerPannelTurn");
       $("#playerPanel2").removeClass("playerPannelTurn");
-      $("#waitingNotice").html("Waiting on " + player1Name + "to choose.");
+      $("#waitingNotice").html("Waiting on " + player1Name + " to choose.");
     }
   }
   else if (snapshot.val() === 2) {
@@ -125,7 +125,7 @@ database.ref("/turn/").on("value", function (snapshot) {
     if (player1 && player2) {
       $("#playerPanel1").removeClass("playerPanelTurn");
       $("#playerPanel2").addClass("playerPanelTurn");
-      $("#waitingNotice").html("Waiting on " + player2Name + "to choose.");
+      $("#waitingNotice").html("Waiting on " + player2Name + " to choose.");
     }
   }
 });
@@ -188,6 +188,10 @@ $("#chat-send").on("click", function (event) {
     var msg = yourPlayerName + ": " + $("#chat-input").val().trim();
     $("#chat-input").val("");
 
+    var chatEntry = $("<div>").html(msg);
+
+    chatEntry.append(chatMessage);
+
     var chatKey = database.ref().child("/child/").push().key;
 
     database.ref("/chat/" + chatKey).set(msg);
@@ -239,16 +243,25 @@ function vlsCompare() {
       database.ref().child("/outcome/").set("Tie.");
       database.ref().child("/players/player1/tie").set(player1.tie + 1);
       database.ref().child("/players/player2/tie").set(player2.tie + 1);
+      $("#roundOutcome").html("Tie.");
+      player1Ties ++;
+      player2Ties ++;
     }
     else if (player2.choice === "Lizard") {
       database.ref().child("/outcome/").set("Lizard beats volcano!");
       database.ref().child("/players/player1/loss").set(player1.loss + 1);
       database.ref().child("/players/player2/win").set(player2.win + 1);
+      $("#roundOutcome").html("Lizard beats volcano!");
+      player1Loses ++;
+      player2Wins ++;
     }
     else {
       database.ref().child("/outcome/").set("Volcano beats Spock!");
       database.ref().child("/players/player1/win").set(player1.win + 1);
       database.ref().child("/players/player2/loss").set(player2.loss + 1);
+      $("#roundOutcome").html("Volcano beats Spock!");
+      player1Wins ++;
+      player2Loses ++;
     }
   }
   else if (player1.choice === "Lizard") {
@@ -256,16 +269,25 @@ function vlsCompare() {
       database.ref().child("/outcome/").set("Lizard beats volcano!");
       database.ref().child("/players/player1/win").set(player1.win + 1);
       database.ref().child("/players/player2/loss").set(player2.loss + 1);
+      $("#roundOutcome").html("Lizard beats volcano!");
+      player1Wins ++;
+      player2Loses ++;
     }
     else if (player2.choice === "Lizard") {
       database.ref().child("/outcome/").set("Tie.");
       database.ref().child("/players/player1/tie").set(player1.tie + 1);
       database.ref().child("/players/player2/tie").set(player2.tie + 1);
+      $("#roundOutcome").html("Tie.");
+      player1Ties ++;
+      player2Ties ++;
     }
     else {
       database.ref().child("/outcome/").set("Spock beats lizard!");
       database.ref().child("/players/player1/loss").set(player1.loss + 1);
       database.ref().child("/players/player2/win").set(player2.win + 1);
+      $("#roundOutcome").html("Spock beats lizard.");
+      player1Loses ++;
+      player2Wins ++;
     }
   }
   else if (player1.choice === "Spock") {
@@ -273,16 +295,25 @@ function vlsCompare() {
       database.ref().child("/outcome/").set("Volcano beats Spock!");
       database.ref().child("/players/player1/loss").set(player1.loss + 1);
       database.ref().chilf("/players/player2/win").set(player2.win + 1);
+      $("#roundOutcome").html("Volcano beats Spock!");
+      player1Loses ++;
+      player2Wins ++;
     }
     else if (player2.choice === "Lizard") {
       database.ref().child("/outcome/").set("Spock beats lizard!");
       database.ref().child("/players/player1/win").set(player1.win + 1);
       database.ref().child("/players/player2/loss").set(player2.loss + 1);
+      $("#roundOutcome").html("Spock beats lizard.");
+      player1Wins ++;
+      player2Loses ++;
     }
     else {
       database.ref().child("/outcome/").set("Tie.");
       database.ref().child("/players/player1/tie").set(player1.tie + 1);
       database.ref().child("/players/player2/tie").set(player2.tie + 1);
+      $("#roundOutcome").html("Tie.");
+      player1Ties ++;
+      player2Ties ++;
     }
   }
 
