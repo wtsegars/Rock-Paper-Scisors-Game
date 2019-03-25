@@ -191,20 +191,19 @@ console.log(yourPlayerName)
 console.log(turn)
   if (($("#chat-input").val().trim() !== "")) {
     var msg = yourPlayerName + ": " + $("#chat-input").val().trim();
-    $("#chat-input").val("");
+    $("#chatInput").val("");
 
 
     // var chatKey = database.ref().child("/child/").push().key;
 
     // database.ref("/chat/" + chatKey).set(msg);
 
-      var userMsg = {
-        name: yourPlayerName,
-        message: msg
-      };
-      database.ref("/chat").push(userMsg);
-    // create obj = {name: user, msg: "message"}
-    // database.ref("/chat").push(obj);
+    var userMsg = {
+      name: yourPlayerName,
+      message: msg
+    };
+    database.ref("/chat").push(userMsg);
+    $("#chatDisplay").text("/chat/");
   }
 });
 

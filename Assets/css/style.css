@@ -1,19 +1,47 @@
+body {
+  background-color: orangered;
+}
 .dropdown {
     position: relative;
     display: inline-block;
+    margin-left: 80px;
   }
   
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 4px 6px;
-    z-index: 1;
-    width: 500px;
-  }
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: darkred;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 4px 6px;
+  z-index: 1;
+  width: 500px;
+}
   
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.jumbotron {
+  background-color: darkred;
+}
+
+.text1 {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.text2 {
+  font-family: 'Germania One', cursive;
+}
+
+.formPanel {
+  margin-left: 525px;
+}
+
+.chatInput {
+  margin-left: 75px;
+}
+
+#chatDisplay {
+  margin-left: 75px;
+}
