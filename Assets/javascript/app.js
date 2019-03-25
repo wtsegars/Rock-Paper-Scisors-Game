@@ -92,19 +92,7 @@ database.ref("/players/").on("child_removed", function (snapshot) {
 database.ref("/chat/").on("child_added", function (snapshot) {
   var chatMessage = snapshot.val();
   var chatEntry = $("<div>").html(chatMessage);
-
-  // if (chatMessage.includes("disconnected")) {
-  //   chatEntry.addClass("chatColorDisconnected");
-  // }
-  // else if (chatMessage.includes("joined")) {
-  //   chatEntry.addClass("chatColorJoined");
-  // }
-  // else if (chatMessage.startsWith(yourPlayerName)) {
-  //   chatEntry.addClass("chatColor1");
-  // }
-  // else {
-  //   chatEntry.addClass("chatColor2");
-  // }
+  
   $("#chatDisplay").append(chatEntry);
   $("#chatDisplay").scrollTop($("#chatDisplay")[0].scrollHeight);
 });
@@ -202,8 +190,8 @@ console.log(turn)
       name: yourPlayerName,
       message: msg
     };
-    database.ref("/chat").push(userMsg);
-    $("#chatDisplay").text("/chat/");
+    database.ref("/chat/").set(userMsg);
+    $("#chatDisplay").text(msg);
   }
 });
 
