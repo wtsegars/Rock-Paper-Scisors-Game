@@ -42,6 +42,32 @@ body {
   margin-left: 75px;
 }
 
+.img-dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+
+.img-display {
+  display: none;
+  position: absolute;
+  margin-left: 60px;
+}
+
+.img-display2 {
+  display: none;
+  position: absolute;
+  margin-left: -175px;
+}
+
+.img-dropdown:hover .img-display {
+  display: block;
+}
+
+.img-dropdown:hover .img-display2 {
+  display: block;
+}
+
 #chatDisplay {
   margin-left: 75px;
 }
