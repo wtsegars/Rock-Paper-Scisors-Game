@@ -1,4 +1,3 @@
-// Initialize Firebase
 var config = {
   apiKey: "AIzaSyDETOOYGjmnF--QUGkzFfd6fR9EJsyESFQ",
   authDomain: "rps-game-1d5f9.firebaseapp.com",
@@ -189,11 +188,6 @@ $("#chat-send").on("click", function (event) {
     var msg = yourPlayerName + ": " + $("#chat-input").val().trim();
     $("#chatInput").val("");
 
-
-    // var chatKey = database.ref().child("/child/").push().key;
-
-    // database.ref("/chat/" + chatKey).set(msg);
-
     var userMsg = {
       name: yourPlayerName,
       message: msg
@@ -248,6 +242,7 @@ function vlsCompare() {
       database.ref().child("/players/player1/tie").set(player1.tie + 1);
       database.ref().child("/players/player2/tie").set(player2.tie + 1);
       $("#roundOutcome").html("Tie.");
+      $("#roundImg").empty();
       player1Ties++;
       player2Ties++;
     }
@@ -256,6 +251,8 @@ function vlsCompare() {
       database.ref().child("/players/player1/loss").set(player1.loss + 1);
       database.ref().child("/players/player2/win").set(player2.win + 1);
       $("#roundOutcome").html("Lizard beats volcano!");
+      $("#roundImg").empty();
+      $("#roundImg").append("<img src= Assets/images/xtoloc.jpg>");
       player1Loses++;
       player2Wins++;
     }
@@ -264,6 +261,8 @@ function vlsCompare() {
       database.ref().child("/players/player1/win").set(player1.win + 1);
       database.ref().child("/players/player2/loss").set(player2.loss + 1);
       $("#roundOutcome").html("Volcano beats Spock!");
+      $("#roundImg").empty();
+      $("#roundImg").append("<img src= Assets/images/volcano.jpg>");
       player1Wins++;
       player2Loses++;
     }
@@ -274,6 +273,8 @@ function vlsCompare() {
       database.ref().child("/players/player1/win").set(player1.win + 1);
       database.ref().child("/players/player2/loss").set(player2.loss + 1);
       $("#roundOutcome").html("Lizard beats volcano!");
+      $("#roundImg").empty();
+      $("#roundImg").append("<img src= Assets/images/xtoloc.jpg>");
       player1Wins++;
       player2Loses++;
     }
@@ -282,6 +283,7 @@ function vlsCompare() {
       database.ref().child("/players/player1/tie").set(player1.tie + 1);
       database.ref().child("/players/player2/tie").set(player2.tie + 1);
       $("#roundOutcome").html("Tie.");
+      $("#roundImg").empty();
       player1Ties++;
       player2Ties++;
     }
@@ -290,6 +292,8 @@ function vlsCompare() {
       database.ref().child("/players/player1/loss").set(player1.loss + 1);
       database.ref().child("/players/player2/win").set(player2.win + 1);
       $("#roundOutcome").html("Spock beats lizard.");
+      $("#roundImg").empty();
+      $("#roundImg").append("<img src= Assets/images/unnamed.jpg>");
       player1Loses++;
       player2Wins++;
     }
@@ -300,6 +304,8 @@ function vlsCompare() {
       database.ref().child("/players/player1/loss").set(player1.loss + 1);
       database.ref().chilf("/players/player2/win").set(player2.win + 1);
       $("#roundOutcome").html("Volcano beats Spock!");
+      $("#roundImg").empty();
+      $("#roundImg").append("<img src= Assets/images/volcano.jpg>");
       player1Loses++;
       player2Wins++;
     }
@@ -308,6 +314,8 @@ function vlsCompare() {
       database.ref().child("/players/player1/win").set(player1.win + 1);
       database.ref().child("/players/player2/loss").set(player2.loss + 1);
       $("#roundOutcome").html("Spock beats lizard.");
+      $("#roundImg").empty();
+      $("#roundImg").append("<img src= Assets/images/unnamed.jpg>");
       player1Wins++;
       player2Loses++;
     }
@@ -316,6 +324,7 @@ function vlsCompare() {
       database.ref().child("/players/player1/tie").set(player1.tie + 1);
       database.ref().child("/players/player2/tie").set(player2.tie + 1);
       $("#roundOutcome").html("Tie.");
+      $("#roundImg").empty();
       player1Ties++;
       player2Ties++;
     }
